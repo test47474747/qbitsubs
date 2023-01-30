@@ -130,14 +130,17 @@ public class StringPicker extends JFrame {
 		// Initialize the save button
 		saveButton = new JButton("Save");
 		final ListModel<String> reorderedListModel = reorderedList.getModel();
-		saveButton.addActionListener(e -> {			
+		saveButton.addActionListener(e -> {
 			List<String> reorderedStrings = new ArrayList<>();
 			for (int i = 0; i < reorderedListModel.getSize(); i++) {
 				reorderedStrings.add(reorderedListModel.getElementAt(i));
 			}
-			Path path = Paths.get(System.getProperty("user.dir") + "\\Languages.txt");
+
+			Path langPath = Paths.get(JarFilePathUtil.getJarFilePath(Main.class)).getParent()
+					.resolve("Languages.txt");
+
 			try {
-				Files.write(path, reorderedStrings);
+				Files.write(langPath, reorderedStrings);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}

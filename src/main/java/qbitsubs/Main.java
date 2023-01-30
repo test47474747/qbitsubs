@@ -18,14 +18,20 @@ public class Main {
 			new StringPicker();
 		} else {
 
-			Path langPath = Paths.get(System.getProperty("user.dir") + "\\Languages.txt");
+			Path langPath = Paths.get(JarFilePathUtil.getJarFilePath(Main.class)).getParent().resolve("Languages.txt");
+			if (!Files.exists(langPath)) {
+				throw new QbitsubsException(
+						"Error finding Languages.txt file. Make sure it is in same folder as the jar file.",
+						new FileNotFoundException());
+			}
+
 			List<String> languagesList = Files.readAllLines(langPath);
 			Collections.reverse(languagesList);
 
-			var path = Paths.get(args[0]);
+			Path path = Paths.get(args[0]);
 
 			// Find subsPath
-			var subsPath = Files
+			Path subsPath = Files
 					.find(path, 1,
 							(p, a) -> a.isDirectory() && (p.getFileName().toString().equalsIgnoreCase("Subs")
 									|| p.getFileName().toString().equalsIgnoreCase("Subtitles")))
